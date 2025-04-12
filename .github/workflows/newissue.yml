@@ -1,0 +1,67 @@
+name: On Issue Created - Create Directory and File and Commit
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  handle_new_issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log Issue Information
+        run: |
+          echo "Neues Issue erstellt!"
+          echo "Titel: ${{ github.event.issue.title }}"
+          echo "Nummer: ${{ github.event.issue.number }}"
+          echo "Autor: ${{ github.event.issue.user.login }}"
+          echo "Link zum Issue: ${{ github.event.issue.html_url }}"
+          echo "Body:"
+          echo "${{ github.event.issue.body }}"
+
+      - name: Sanitize Issue Title for Directory Name
+        id: sanitize_title
+        run: |
+          TITLE="${{ github.event.issue.title }}"
+          SAFE_TITLE="${TITLE// /_}"
+          SAFE_TITLE="${SAFE_TITLE//[^a-zA-Z0-9_]/}"
+          echo "safe_title=$SAFE_TITLE" >> $GITHUB_OUTPUT
+
+      - name: Create Directory
+        run: mkdir -p "issues/${{ steps.sanitize_title.outputs.safe_title }}"
+
+      - name: Write Issue Body to File
+        run: |
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          echo "$ISSUE_BODY" > "issues/${{ steps.sanitize_title.outputs.safe_title }}/issue_body.txt"
+
+      - name: Optional: Add Label
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['needs-triage'] # Hier das gewünschte Label eintragen
+            })
+
+      - name: Configure Git User
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
+      - name: Add Changes
+        run: git add "issues/${{ steps.sanitize_title.outputs.safe_title }}"
+
+      - name: Commit Changes
+        run: git commit -m "Docs: Add issue content for issue #${{ github.event.issue.number }}"
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref || github.ref_name }} # Pushes to the branch where the issue was created (if applicable) or the default branch
