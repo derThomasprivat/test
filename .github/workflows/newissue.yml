@@ -38,7 +38,8 @@ jobs:
           ISSUE_BODY="${{ github.event.issue.body }}"
           echo "$ISSUE_BODY" > "issues/${{ steps.sanitize_title.outputs.safe_title }}/issue_body.txt"
 
-      - name: Optional: Add Label
+      - name: 
+        Optional: Add Label
         uses: actions/github-script@v6
         with:
           script: |
