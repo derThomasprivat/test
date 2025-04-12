@@ -57,9 +57,9 @@ jobs:
 
       - name: Add Changes
         run: git add "issues/${{ steps.sanitize_title.outputs.safe_title }}"
-
+      
       - name: Commit Changes
-        run: git commit -m "Docs: Add issue content for issue"
+        run: git commit -m "Docs':' Add issue content for issue #${{ github.event.issue.number }}"
 
       - name: Push Changes
         uses: ad-m/github-push-action@master
