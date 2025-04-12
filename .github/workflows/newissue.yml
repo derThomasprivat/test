@@ -38,17 +38,6 @@ jobs:
           ISSUE_BODY="${{ github.event.issue.body }}"
           echo "$ISSUE_BODY" > "issues/${{ steps.sanitize_title.outputs.safe_title }}/issue_body.txt"
 
-      - name: Optional:Add Label
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['bug'] # Hier das gewünschte Label eintragen
-            })
-
       - name: Configure Git User
         run: |
           git config --global user.name "GitHub Actions Bot"
