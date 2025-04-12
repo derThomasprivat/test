@@ -46,7 +46,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['needs-triage'] # Hier das gewünschte Label eintragen
+              labels: ['bug'] # Hier das gewünschte Label eintragen
             })
 
       - name: Configure Git User
