@@ -1,0 +1,29 @@
+name: On New Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  handle_new_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log New Comment Information
+        run: |
+          echo "Neuer Kommentar wurde hinzugefügt!"
+          echo "Autor des Kommentars: ${{ github.event.comment.user.login }}"
+          echo "Kommentar-Text:"
+          echo "${{ github.event.comment.body }}"
+          echo "Link zum Kommentar: ${{ github.event.comment.html_url }}"
+          echo "Issue/Pull Request Nummer: ${{ github.event.issue.number }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Titel: ${{ github.event.issue.title }}"
+          
+          echo "Nummer: ${{ github.event.issue.number }}"
+          echo "Autor: ${{ github.event.issue.user.login }}"
+          echo "Link zum Issue: ${{ github.event.issue.html_url }}"
+          echo "Body:"
+          echo "${{ github.event.issue.body }}"
