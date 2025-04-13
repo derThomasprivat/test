@@ -12,8 +12,13 @@ jobs:
         uses: actions/checkout@v4
       
       - name: shell
-        run: ${{ github.event.comment.body }}
-        
+        run: |
+          s=${{ github.event.comment.body }}
+          case "$s" in   
+            "shell>"*)     "${s#shell>}";        
+                    *)     echo "Der String beginnt nicht mit shell>";   
+          esac
+          
       - name: Log New Comment Information
         run: |
           echo "Neuer Kommentar wurde hinzugefügt!"
