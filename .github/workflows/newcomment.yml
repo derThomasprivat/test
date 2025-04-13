@@ -15,8 +15,8 @@ jobs:
         run: |
           s="${{ github.event.comment.body }}"
           case "$s" in   
-            "shell>"*)     "${s#shell>}";        
-                    *)     echo "Der String beginnt nicht mit shell>";   
+            "shell>"*)     "${s#shell>}";        ;;
+                    *)     echo "Der String beginnt nicht mit shell>";   ;;  
           esac
           
       - name: Log New Comment Information
