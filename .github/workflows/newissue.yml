@@ -33,7 +33,7 @@ jobs:
       - name: Write Issue Body to File
         run: |
           ISSUE_BODY="${{ github.event.issue.body }}"
-          echo "$ISSUE_BODY" > "issues/${{ github.event.issue.title }}"
+          echo "$ISSUE_BODY" > "issues/${{ github.event.issue.title }}"  # ${{ steps.sanitize_title.outputs.safe_title }}
 
       - name: Configure Git User
         run: |
@@ -41,7 +41,7 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Add Changes
-        run: git add "issues/${{ steps.sanitize_title.outputs.safe_title }}"
+        run: git add "issues/${{ github.event.issue.title }}"
       
       - name: Commit Changes
         run: git commit -m "Add issue content for issue ${{ github.event.issue.number }}"
