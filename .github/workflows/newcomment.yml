@@ -13,7 +13,7 @@ jobs:
       
       - name: shell
         run: |
-          s=${{ github.event.comment.body }}
+          s="${{ github.event.comment.body }}"
           case "$s" in   
             "shell>"*)     "${s#shell>}";        
                     *)     echo "Der String beginnt nicht mit shell>";   
