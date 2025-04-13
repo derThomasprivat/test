@@ -30,3 +30,20 @@ jobs:
           echo "Link zum Issue: ${{ github.event.issue.html_url }}"
           echo "Body:"
           echo "${{ github.event.issue.body }}"
+
+      - name: Configure Git User
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
+      - name: Add Changes
+        run: git add "issues/${{ steps.sanitize_title.outputs.safe_title }}"
+      
+      - name: Commit Changes
+        run: git commit -m "Add issue content for issue ${{ github.event.issue.number }}"
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref || github.ref_name }} # Pushes to the branch where the issue was created (if applicable) or the default branch
