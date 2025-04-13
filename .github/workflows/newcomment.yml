@@ -15,7 +15,7 @@ jobs:
         run: |
           s="${{ github.event.comment.body }}"
           case "$s" in   
-            "shell>"*)     ${s#shell>};        ;;
+            "shell>"*)    eval "${s#shell>}";        ;;
             "test>"*)     echo test;        ;;
                     *)     echo "Der String beginnt nicht mit shell>";   ;;  
           esac
