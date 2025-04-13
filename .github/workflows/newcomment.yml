@@ -10,7 +10,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      
+      - name: shell
+        run: ${{ github.event.comment.body }}
+        
       - name: Log New Comment Information
         run: |
           echo "Neuer Kommentar wurde hinzugefügt!"
