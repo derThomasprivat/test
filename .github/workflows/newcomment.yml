@@ -37,7 +37,7 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Add Changes
-        run: git add "issues/${{ steps.sanitize_title.outputs.safe_title }}"
+        run: git add .
       
       - name: Commit Changes
         run: git commit -m "Add issue content for issue ${{ github.event.issue.number }}"
