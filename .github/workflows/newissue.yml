@@ -33,7 +33,7 @@ jobs:
       - name: Write Issue Body to File
         run: |
           ISSUE_BODY="${{ github.event.issue.body }}"
-          echo "$ISSUE_BODY" > "issues/${{ github.event.issue.title }}"  # ${{ steps.sanitize_title.outputs.safe_title }}
+          echo "$ISSUE_BODY" >> "issues/${{ github.event.issue.title }}"  # ${{ steps.sanitize_title.outputs.safe_title }}
 
       - name: Configure Git User
         run: |
